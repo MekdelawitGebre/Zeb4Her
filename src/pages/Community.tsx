@@ -1,26 +1,31 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MobileLayout from "@/components/MobileLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SearchIcon, Heart, MessageSquare, Share2, Send, Plus, User, Users, BookOpen, ShieldCheck } from "lucide-react";
+import { SearchIcon, Plus, Users, BookOpen, ShieldCheck, ChevronRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getAllPosts, Post } from "@/services/postService";
+import PostCard from "@/components/PostCard";
+import CreatePostModal from "@/components/CreatePostModal";
 
 const CommunityPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [commentText, setCommentText] = useState("");
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleLike = () => {
-    toast({
-      title: "Post Liked",
-      description: "You've shown support for this post.",
-    });
+  // Initial data load
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = () => {
+    const fetchedPosts = getAllPosts();
+    setPosts(fetchedPosts);
   };
 
   const handleShare = () => {
@@ -30,23 +35,8 @@ const CommunityPage: React.FC = () => {
     });
   };
 
-  const handleComment = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!commentText.trim()) return;
-    
-    toast({
-      title: "Comment Added",
-      description: "Your comment has been posted.",
-    });
-    
-    setCommentText("");
-  };
-
   const handleCreatePost = () => {
-    toast({
-      title: "Create Post",
-      description: "Post creation form would open here in the full version.",
-    });
+    setIsPostModalOpen(true);
   };
 
   const handleJoinGroup = (groupName: string) => {
@@ -56,48 +46,13 @@ const CommunityPage: React.FC = () => {
     });
   };
 
-  const posts = [
-    {
-      id: 1,
-      author: {
-        name: "Sarah J.",
-        avatar: "",
-        isAnonymous: false
-      },
-      time: "2 hours ago",
-      content: "I just had my first prenatal checkup today! Feeling excited and nervous at the same time. Any advice from experienced moms?",
-      likes: 24,
-      comments: 8,
-      group: "Pregnancy Support"
-    },
-    {
-      id: 2,
-      author: {
-        name: "Anonymous",
-        avatar: "",
-        isAnonymous: true
-      },
-      time: "Yesterday",
-      content: "I've been experiencing harassment at my workplace but I'm afraid to report it. Has anyone dealt with a similar situation?",
-      likes: 32,
-      comments: 15,
-      group: "Workplace Safety"
-    },
-    {
-      id: 3,
-      author: {
-        name: "Dr. Lisa Patel",
-        avatar: "",
-        isAnonymous: false,
-        isVerified: true
-      },
-      time: "3 days ago",
-      content: "Important reminder: Regular health checkups during pregnancy are essential. Don't skip your appointments, even if you feel fine!",
-      likes: 87,
-      comments: 12,
-      group: "Health Advice"
-    }
-  ];
+  const handlePostUpdate = (updatedPost: Post) => {
+    setPosts(currentPosts => 
+      currentPosts.map(post => 
+        post.id === updatedPost.id ? updatedPost : post
+      )
+    );
+  };
 
   const groups = [
     {
@@ -208,68 +163,11 @@ const CommunityPage: React.FC = () => {
             <ScrollArea className="h-[calc(100vh-240px)]">
               <div className="space-y-4">
                 {posts.map((post) => (
-                  <Card key={post.id}>
-                    <CardContent className="p-4">
-                      <div className="flex items-start space-x-3 mb-3">
-                        <Avatar>
-                          {post.author.isAnonymous ? (
-                            <User className="h-6 w-6" />
-                          ) : (
-                            <div className="bg-zeb-purple text-white h-full w-full flex items-center justify-center">
-                              {post.author.name.charAt(0)}
-                            </div>
-                          )}
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center">
-                            <p className="font-medium">{post.author.name}</p>
-                            {post.author.isVerified && (
-                              <Badge variant="outline" className="ml-2 bg-blue-50 text-blue-600 hover:bg-blue-50">
-                                Verified
-                              </Badge>
-                            )}
-                          </div>
-                          <div className="flex items-center text-xs text-muted-foreground">
-                            <span>{post.time}</span>
-                            <span className="mx-1">•</span>
-                            <span className="text-zeb-purple">{post.group}</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <p className="text-sm mb-4">{post.content}</p>
-                      
-                      <div className="flex items-center justify-between text-sm text-muted-foreground">
-                        <div className="flex items-center space-x-4">
-                          <button className="flex items-center space-x-1" onClick={handleLike}>
-                            <Heart className="h-4 w-4" />
-                            <span>{post.likes}</span>
-                          </button>
-                          <button className="flex items-center space-x-1">
-                            <MessageSquare className="h-4 w-4" />
-                            <span>{post.comments}</span>
-                          </button>
-                        </div>
-                        <button onClick={handleShare}>
-                          <Share2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </CardContent>
-                    
-                    <CardFooter className="p-4 pt-0 border-t">
-                      <form onSubmit={handleComment} className="flex w-full space-x-2">
-                        <Input
-                          placeholder="Write a comment..."
-                          value={commentText}
-                          onChange={(e) => setCommentText(e.target.value)}
-                          className="flex-1"
-                        />
-                        <Button size="sm" type="submit" className="bg-zeb-purple">
-                          <Send className="h-4 w-4" />
-                        </Button>
-                      </form>
-                    </CardFooter>
-                  </Card>
+                  <PostCard 
+                    key={post.id} 
+                    post={post} 
+                    onUpdate={handlePostUpdate}
+                  />
                 ))}
               </div>
             </ScrollArea>
@@ -348,24 +246,14 @@ const CommunityPage: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      <CreatePostModal 
+        isOpen={isPostModalOpen}
+        onClose={() => setIsPostModalOpen(false)}
+        onPostCreated={loadPosts}
+      />
     </MobileLayout>
   );
 };
-
-// Component to avoid a React error
-const ChevronRight: React.FC<{ className?: string }> = ({ className }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <polyline points="9 18 15 12 9 6" />
-  </svg>
-);
 
 export default CommunityPage;

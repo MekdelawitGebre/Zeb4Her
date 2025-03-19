@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import MobileLayout from "@/components/MobileLayout";
 import { Button } from "@/components/ui/button";
@@ -24,6 +23,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "@/contexts/ThemeContext";
+import ImageUploader from "@/components/ImageUploader";
 
 interface EmergencyContact {
   id: number;
@@ -32,11 +33,12 @@ interface EmergencyContact {
 }
 
 const ProfilePage: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [locationSharing, setLocationSharing] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [dataSaver, setDataSaver] = useState(false);
   const [profileVisibility, setProfileVisibility] = useState<"public" | "friends" | "private">("friends");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const { toast } = useToast();
   
   const [emergencyContacts, setEmergencyContacts] = useState<EmergencyContact[]>([
@@ -60,7 +62,7 @@ const ProfilePage: React.FC = () => {
   };
 
   const handleToggleDarkMode = (checked: boolean) => {
-    setIsDarkMode(checked);
+    toggleDarkMode();
     toast({
       title: `Dark Mode ${checked ? "Enabled" : "Disabled"}`,
       description: `The app theme has been set to ${checked ? "dark" : "light"} mode.`,
@@ -79,6 +81,14 @@ const ProfilePage: React.FC = () => {
     }, 1500);
   };
 
+  const handleAvatarUpload = (imageUrl: string) => {
+    setAvatarUrl(imageUrl);
+    toast({
+      title: "Profile Photo Updated",
+      description: "Your profile photo has been updated successfully.",
+    });
+  };
+
   return (
     <MobileLayout>
       <div className="mobile-container">
@@ -92,13 +102,26 @@ const ProfilePage: React.FC = () => {
         <div className="flex flex-col items-center mb-6">
           <div className="relative mb-4">
             <Avatar className="h-24 w-24 border-4 border-white shadow-md">
-              <div className="bg-zeb-purple text-white h-full w-full flex items-center justify-center text-3xl">
-                M
-              </div>
+              {avatarUrl ? (
+                <img src={avatarUrl} alt="Profile" className="h-full w-full object-cover" />
+              ) : (
+                <div className="bg-zeb-purple text-white h-full w-full flex items-center justify-center text-3xl">
+                  M
+                </div>
+              )}
             </Avatar>
-            <button className="absolute bottom-0 right-0 h-8 w-8 bg-zeb-pink text-white rounded-full flex items-center justify-center shadow-md">
+            <button 
+              className="absolute bottom-0 right-0 h-8 w-8 bg-zeb-pink text-white rounded-full flex items-center justify-center shadow-md"
+              onClick={() => document.getElementById('avatar-upload')?.click()}
+            >
               <Camera className="h-4 w-4" />
             </button>
+            <div className="hidden">
+              <ImageUploader 
+                onImageUploaded={handleAvatarUpload} 
+                buttonText="Upload Photo"
+              />
+            </div>
           </div>
           
           <h2 className="text-xl font-bold">Maria Johnson</h2>

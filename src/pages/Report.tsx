@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import ImageUploader from "@/components/ImageUploader";
 
 const ReportPage: React.FC = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -30,6 +31,7 @@ const ReportPage: React.FC = () => {
   const [description, setDescription] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -57,6 +59,7 @@ const ReportPage: React.FC = () => {
     setTime("");
     setLocation("");
     setDescription("");
+    setImageUrl(null);
   };
 
   const handleLocationDetect = () => {
@@ -68,19 +71,6 @@ const ReportPage: React.FC = () => {
       toast({
         title: "Location Detected",
         description: "Your current location has been added to the report.",
-      });
-    }, 1500);
-  };
-
-  const handleUploadFile = () => {
-    setIsUploading(true);
-    
-    // Mock file upload
-    setTimeout(() => {
-      setIsUploading(false);
-      toast({
-        title: "File Uploaded",
-        description: "Evidence has been attached to your report.",
       });
     }, 1500);
   };
@@ -99,6 +89,10 @@ const ReportPage: React.FC = () => {
         description: "Recording your voice description...",
       });
     }
+  };
+
+  const handleImageUploaded = (url: string) => {
+    setImageUrl(url);
   };
 
   return (
@@ -206,27 +200,40 @@ const ReportPage: React.FC = () => {
 
           <div className="space-y-2">
             <Label>Evidence (Optional)</Label>
-            <div className="flex space-x-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1"
-                onClick={handleUploadFile}
-                disabled={isUploading}
-              >
-                <File className="mr-2 h-4 w-4" />
-                {isUploading ? "Uploading..." : "Upload Photo"}
-              </Button>
-              <Button
-                type="button"
-                variant={isRecording ? "default" : "outline"}
-                className={`flex-1 ${isRecording ? "bg-red-500 hover:bg-red-600" : ""}`}
-                onClick={handleVoiceRecording}
-              >
-                <Mic className="mr-2 h-4 w-4" />
-                {isRecording ? "Stop Recording" : "Voice Input"}
-              </Button>
-            </div>
+            {imageUrl ? (
+              <div className="mb-4">
+                <div className="relative rounded-md overflow-hidden">
+                  <img src={imageUrl} alt="Evidence" className="w-full h-auto max-h-48 object-cover" />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className="absolute top-2 right-2 h-8 w-8 p-0"
+                    onClick={() => setImageUrl(null)}
+                  >
+                    &times;
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex space-x-2">
+                <div className="flex-1">
+                  <ImageUploader
+                    onImageUploaded={handleImageUploaded}
+                    buttonText="Upload Photo"
+                  />
+                </div>
+                <Button
+                  type="button"
+                  variant={isRecording ? "default" : "outline"}
+                  className={`flex-1 ${isRecording ? "bg-red-500 hover:bg-red-600" : ""}`}
+                  onClick={handleVoiceRecording}
+                >
+                  <Mic className="mr-2 h-4 w-4" />
+                  {isRecording ? "Stop Recording" : "Voice Input"}
+                </Button>
+              </div>
+            )}
             <p className="text-xs text-muted-foreground">
               Files and recordings will be encrypted and stored securely.
             </p>
