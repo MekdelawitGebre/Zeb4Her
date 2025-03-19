@@ -74,8 +74,6 @@ const ProfilePage: React.FC = () => {
       title: "Logging Out",
       description: "You are being signed out of your account.",
     });
-    // In a real app, we would implement actual logout functionality here
-    // For demo purposes, we'll redirect to login after a short delay
     setTimeout(() => {
       window.location.href = "/login";
     }, 1500);
@@ -311,7 +309,7 @@ const ProfilePage: React.FC = () => {
                       <Switch
                         id="dark-mode"
                         checked={isDarkMode}
-                        onCheckedChange={handleToggleDarkMode}
+                        onCheckedChange={toggleDarkMode}
                       />
                     </div>
                     

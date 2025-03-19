@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Bell, Shield, HeartPulse, Users, MapPin, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Home: React.FC = () => {
   const [isEmergency, setIsEmergency] = useState(false);
   const [countdown, setCountdown] = useState(3);
   const { toast } = useToast();
+  const { isDarkMode } = useTheme();
 
   // Handle emergency button countdown
   useEffect(() => {
