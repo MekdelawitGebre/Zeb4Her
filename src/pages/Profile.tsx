@@ -632,6 +632,10 @@ const ProfilePage: React.FC = () => {
                         Help & Support
                       </span>
                       <button className="text-zeb-purple">Contact</button>
+                      <span className="text-muted-foreground">
+                        Developer
+                      </span>
+                      <button className="text-zeb-purple">Mekdelawit</button>
                     </p>
                   </div>
                 </CardContent>
