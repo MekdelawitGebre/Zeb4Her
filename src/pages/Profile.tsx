@@ -68,7 +68,7 @@ const ProfilePage: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
     name: "Mekdelawit Gebre",
     username: "Megdela4",
-    quote: "Now it's more about 'how I can'—be in tech",
+    quote: "Don’t wait for opportunity. Create it",
   });
 
   // Edit mode states
