@@ -30,10 +30,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       handleImageSelection(e, (url) => {
         onImageUploaded(url);
-        toast({
-          title: "Image Uploaded",
-          description: "Your image has been uploaded successfully",
-        });
+        // toast({
+        //   title: "Image Uploaded",
+        //   description: "Your image has been uploaded successfully",
+        // });
         setIsUploading(false);
       });
     } catch (error) {

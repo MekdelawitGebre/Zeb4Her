@@ -40,10 +40,10 @@ const CommunityPage: React.FC = () => {
   };
 
   const handleJoinGroup = (groupName: string) => {
-    toast({
-      title: `Joined ${groupName}`,
-      description: "You've successfully joined this group.",
-    });
+    // toast({
+    //   title: `Joined ${groupName}`,
+    //   description: "You've successfully joined this group.",
+    // });
   };
 
   const handlePostUpdate = (updatedPost: Post) => {
@@ -57,39 +57,39 @@ const CommunityPage: React.FC = () => {
   const groups = [
     {
       id: 1,
-      name: "Pregnancy Support",
+      name: "High School Girls",
       members: 1240,
       posts: 56,
-      isJoined: true
+      isJoined: false,
     },
     {
       id: 2,
-      name: "Tech Women",
+      name: "Women in Tech",
       members: 985,
       posts: 32,
-      isJoined: false
+      isJoined: false,
     },
     {
       id: 3,
-      name: "University Safety",
+      name: "Home Business",
       members: 1850,
       posts: 78,
-      isJoined: false
+      isJoined: false,
     },
     {
       id: 4,
-      name: "Healing & Recovery",
+      name: "Women's Leadership",
       members: 735,
       posts: 41,
-      isJoined: true
+      isJoined: true,
     },
     {
       id: 5,
       name: "Workplace Safety",
       members: 1120,
       posts: 63,
-      isJoined: false
-    }
+      isJoined: true,
+    },
   ];
 
   const resources = [
@@ -118,9 +118,9 @@ const CommunityPage: React.FC = () => {
       <div className="mobile-container">
         <header className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-zeb-purple">Community</h1>
+            <h1 className="text-2xl font-bold text-zeb-purple">Enawga</h1>
             <p className="text-muted-foreground">
-              Connect, share, and support each other
+              Connect, share, and support 
             </p>
           </div>
           <Button
@@ -128,7 +128,7 @@ const CommunityPage: React.FC = () => {
             onClick={handleCreatePost}
             className="bg-zeb-purple hover:bg-zeb-darkPurple"
           >
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4" />
             Post
           </Button>
         </header>
@@ -221,7 +221,7 @@ const CommunityPage: React.FC = () => {
             </Card>
             
             <h3 className="font-medium mb-2 text-zeb-purple">Resources & Guidance</h3>
-            <ScrollArea className="h-[calc(100vh-320px)]">
+            <ScrollArea className="h-[calc(100vh-500px)]">
               <div className="space-y-3">
                 {resources.map((resource) => (
                   <Card key={resource.id} className="card-hover">

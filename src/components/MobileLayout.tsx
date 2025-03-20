@@ -18,17 +18,17 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
       href: "/home"
     },
     {
-      label: "Reports",
+      label: "Report",
       icon: FileText,
       href: "/report"
     },
     {
-      label: "Health",
+      label: "Adot",
       icon: HeartPulse,
       href: "/health"
     },
     {
-      label: "Community",
+      label: "Enawga",
       icon: Users,
       href: "/community"
     },

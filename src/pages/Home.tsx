@@ -38,7 +38,7 @@ const Home: React.FC = () => {
     toast({
       title: "Emergency Alert Sent",
       description: "Your emergency contacts have been notified with your location.",
-      variant: "destructive"
+      // variant: "destructive"
     });
     
     // In a real app, this would:
@@ -54,10 +54,10 @@ const Home: React.FC = () => {
   const cancelEmergency = () => {
     setIsEmergency(false);
     setCountdown(3);
-    toast({
-      title: "Emergency Cancelled",
-      description: "The emergency alert has been cancelled.",
-    });
+    // toast({
+    //   title: "Emergency Cancelled",
+    //   description: "The emergency alert has been cancelled.",
+    // });
   };
 
   return (
@@ -75,10 +75,12 @@ const Home: React.FC = () => {
         <div className="flex flex-col items-center justify-center py-6">
           {isEmergency ? (
             <div className="flex flex-col items-center">
-              <div className="text-4xl font-bold text-destructive mb-4">{countdown}</div>
-              <Button 
+              <div className="text-4xl font-bold text-destructive mb-4">
+                {countdown}
+              </div>
+              <Button
                 onClick={cancelEmergency}
-                variant="outline" 
+                variant="outline"
                 className="bg-white border-destructive text-destructive hover:bg-destructive hover:text-white"
               >
                 Cancel Emergency
@@ -86,15 +88,11 @@ const Home: React.FC = () => {
             </div>
           ) : (
             <>
-              <button 
-                onClick={startEmergency}
-                className="emergency-button"
-              >
-                <Shield className="h-10 w-10" />
+              <button onClick={startEmergency} className="emergency-button">
+                <Shield className="h-12 w-12" strokeWidth={2} />
               </button>
               <p className="mt-4 text-center text-sm text-muted-foreground">
-                Press in an emergency. <br />
-                A 3-second countdown will begin.
+                Press in an emergency. <br />A 3-second countdown will begin.
               </p>
             </>
           )}
@@ -105,34 +103,34 @@ const Home: React.FC = () => {
           <Card className="card-hover">
             <CardContent className="p-4 flex flex-col items-center">
               <div className="h-10 w-10 rounded-full bg-zeb-lightPink flex items-center justify-center mb-3">
-                <HeartPulse className="h-5 w-5 text-zeb-pink" />
+                <HeartPulse className="h-8  w-8 strokeWidth={2} text-zeb-pink" />
               </div>
               <h3 className="font-medium">Maternal Health</h3>
             </CardContent>
           </Card>
-          
+
           <Card className="card-hover">
             <CardContent className="p-4 flex flex-col items-center">
               <div className="h-10 w-10 rounded-full bg-zeb-lightPink flex items-center justify-center mb-3">
-                <Users className="h-5 w-5 text-zeb-pink" />
+                <Users className="h-8  w-8 strokeWidth={2} text-zeb-pink" />
               </div>
               <h3 className="font-medium">Community</h3>
             </CardContent>
           </Card>
-          
+
           <Card className="card-hover">
             <CardContent className="p-4 flex flex-col items-center">
               <div className="h-10 w-10 rounded-full bg-zeb-lightPink flex items-center justify-center mb-3">
-                <MapPin className="h-5 w-5 text-zeb-pink" />
+                <MapPin className="h-8  w-8 strokeWidth={2} text-zeb-pink" />
               </div>
               <h3 className="font-medium">Find Help</h3>
             </CardContent>
           </Card>
-          
+
           <Card className="card-hover">
             <CardContent className="p-4 flex flex-col items-center">
               <div className="h-10 w-10 rounded-full bg-zeb-lightPink flex items-center justify-center mb-3">
-                <Phone className="h-5 w-5 text-zeb-pink" />
+                <Phone className="h-8  w-8 strokeWidth={2} text-zeb-pink" />
               </div>
               <h3 className="font-medium">Emergency Call</h3>
             </CardContent>
@@ -144,7 +142,8 @@ const Home: React.FC = () => {
           <CardContent className="p-4">
             <h3 className="font-medium text-zeb-purple mb-1">Safety Tip</h3>
             <p className="text-sm">
-              Share your travel plans with a trusted friend or family member when going to new places.
+              Share your travel plans with a trusted friend or family member
+              when going to new places.
             </p>
           </CardContent>
         </Card>

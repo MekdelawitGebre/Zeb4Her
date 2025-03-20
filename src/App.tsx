@@ -13,6 +13,7 @@ import Health from "./pages/Health";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
 
 // Create a new QueryClient for React Query
 const queryClient = new QueryClient();
@@ -37,6 +38,8 @@ const App = () => {
             <Route path="/index" element={<Navigate to="/" replace />} />
             {/* Catch-all route for 404 */}
             <Route path="*" element={<NotFound />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

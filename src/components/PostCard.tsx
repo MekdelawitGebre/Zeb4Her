@@ -23,12 +23,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
     const updatedPost = likePost(post.id);
     if (updatedPost) {
       onUpdate(updatedPost);
-      toast({
-        title: updatedPost.userHasLiked ? "Post Liked" : "Like Removed",
-        description: updatedPost.userHasLiked 
-          ? "You've shown support for this post."
-          : "You've removed your like from this post.",
-      });
+      // toast({
+      //   title: updatedPost.userHasLiked ? "Post Liked" : "Like Removed",
+      //   description: updatedPost.userHasLiked 
+      //     ? "You've shown support for this post."
+      //     : "You've removed your like from this post.",
+      // });
     }
   };
 
@@ -53,10 +53,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
         setComments(prev => [newComment, ...prev]);
       }
       
-      toast({
-        title: "Comment Added",
-        description: "Your comment has been posted.",
-      });
+      // toast({
+      //   title: "Comment Added",
+      //   description: "Your comment has been posted.",
+      // });
       
       setCommentText("");
       
@@ -83,7 +83,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
         <div className="flex items-start space-x-3 mb-3">
           <Avatar>
             {post.author.isAnonymous ? (
-              <User className="h-6 w-6" />
+              <User className="flex items-center justify-center w-full h-full rounded-full border-2 border-gray-500 bg-white"></User>
             ) : (
               <div className="bg-zeb-purple text-white h-full w-full flex items-center justify-center">
                 {post.author.name.charAt(0)}
@@ -94,7 +94,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
             <div className="flex items-center">
               <p className="font-medium">{post.author.name}</p>
               {post.author.isVerified && (
-                <Badge variant="outline" className="ml-2 bg-blue-50 text-blue-600 hover:bg-blue-50">
+                <Badge
+                  variant="outline"
+                  className="ml-2 bg-blue-50 text-blue-600 hover:bg-blue-50"
+                >
                   Verified
                 </Badge>
               )}
@@ -106,25 +109,34 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
             </div>
           </div>
         </div>
-        
+
         <p className="text-sm mb-4">{post.content}</p>
-        
+
         {post.image && (
           <div className="mb-4 rounded-md overflow-hidden">
             <img src={post.image} alt="Post" className="w-full h-auto" />
           </div>
         )}
-        
+
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center space-x-4">
-            <button 
-              className={`flex items-center space-x-1 ${post.userHasLiked ? 'text-red-500' : ''}`} 
+            <button
+              className={`flex items-center space-x-1 ${
+                post.userHasLiked ? "text-red-500" : ""
+              }`}
               onClick={handleLike}
             >
-              <Heart className={`h-4 w-4 ${post.userHasLiked ? 'fill-current text-red-500' : ''}`} />
+              <Heart
+                className={`h-4 w-4 ${
+                  post.userHasLiked ? "fill-current text-red-500" : ""
+                }`}
+              />
               <span>{post.likes}</span>
             </button>
-            <button className="flex items-center space-x-1" onClick={handleToggleComments}>
+            <button
+              className="flex items-center space-x-1"
+              onClick={handleToggleComments}
+            >
               <MessageSquare className="h-4 w-4" />
               <span>{post.comments}</span>
             </button>
@@ -134,7 +146,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
           </button>
         </div>
       </CardContent>
-      
+
       {showComments && comments.length > 0 && (
         <div className="px-4 pb-2">
           <h4 className="text-sm font-medium mb-2">Comments</h4>
@@ -142,8 +154,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
             {comments.map((comment) => (
               <div key={comment.id} className="bg-gray-50 p-2 rounded-md">
                 <div className="flex justify-between">
-                  <span className="text-xs font-medium">{comment.authorName}</span>
-                  <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
+                  <span className="text-xs font-medium">
+                    {comment.authorName}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {comment.timestamp}
+                  </span>
                 </div>
                 <p className="text-sm mt-1">{comment.content}</p>
               </div>
@@ -151,9 +167,12 @@ const PostCard: React.FC<PostCardProps> = ({ post, onUpdate }) => {
           </div>
         </div>
       )}
-      
+
       <CardFooter className="p-4 pt-0 border-t">
-        <form onSubmit={handleComment} className="flex w-full space-x-2">
+        <form
+          onSubmit={handleComment}
+          className="flex w-full space-x-2 space-y-2"
+        >
           <Input
             placeholder="Write a comment..."
             value={commentText}
